@@ -1,0 +1,6 @@
+# Copy to backend.hcl and fill in values from the bootstrap outputs:
+#   terraform output state_bucket
+#   terraform output terraform_service_account
+bucket                      = "SEED_PROJECT_ID-tfstate"
+prefix                      = "org/folders"
+impersonate_service_account = "terraform@SEED_PROJECT_ID.iam.gserviceaccount.com"

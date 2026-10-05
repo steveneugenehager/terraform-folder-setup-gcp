@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars (gitignored) and fill in.
+org_id                    = "123456789012"
+terraform_service_account = "terraform@SEED_PROJECT_ID.iam.gserviceaccount.com"
+
+# Optional: defaults shown.
+# folder_prefix = "fldr"
+# environments  = ["development", "nonproduction", "production"]
+
+# Optional folder-level grants, ideally to groups rather than individuals.
+# folder_iam = {
+#   development = [
+#     { role = "roles/viewer", member = "group:gcp-developers@yourdomain.com" },
+#   ]
+#   production = [
+#     { role = "roles/viewer", member = "group:gcp-org-admins@yourdomain.com" },
+#   ]
+# }
