@@ -22,7 +22,7 @@ variable "folder_prefix" {
 variable "environments" {
   description = "Top-level folders to create under the organization, one per environment."
   type        = list(string)
-  default     = ["development", "nonproduction", "production"]
+  default     = ["lab", "development", "nonproduction", "production"]
 
   validation {
     condition     = alltrue([for e in var.environments : can(regex("^[a-z][a-z0-9-]{1,20}$", e))])
