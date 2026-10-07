@@ -1,3 +1,6 @@
+# Change History:
+# 2026-10-07 Steve Hager v2.0 Adding subfolders under environment folders.
+
 variable "org_id" {
   description = "Numeric organization ID (gcloud organizations list, ID column)."
   type        = string
@@ -48,4 +51,15 @@ variable "deletion_protection" {
   description = "Prevent Terraform from deleting folders. Set false deliberately to remove one."
   type        = bool
   default     = true
+}
+
+variable "env_subfolders" {
+  description = "Subfolders to create inside every environment folder."
+  type        = list(string)
+  default     = ["infrastructure", "services", "domains"]
+
+  validation {
+    condition     = alltrue([for s in var.env_subfolders : can(regex("^[a-z][a-z0-9-]{1,20}$", s))])
+    error_message = "Subfolder names: lowercase letters, digits, hyphens; start with a letter; 2-21 chars."
+  }
 }
