@@ -5,6 +5,8 @@
 # 2026-10-07 Steve Hager v2.0 Adding subfolders under environment folders.
 # 2026-10-07 Steve Hager v2.1 Adding subfolders under domains subfolders.
 # 2026-10-07 Steve Hager v2.2 Adding top level folders (expected to be used for common and bootstrap projects).
+# 2026-10-07 Steve Hager v2.2.1 Fixed a couple of bugs related to length of folder names. 
+#                                  In two places the folder_prefix wasn't being accounted for in the checks.
 
 # ---------------------------------------------------------------------------
 # Shared top-level folders: org-wide services that belong to no environment.
@@ -97,8 +99,8 @@ resource "google_folder" "env_sub" {
 
   lifecycle {
     precondition {
-      condition     = length("${each.value.env}-${each.value.sub}") <= 30
-      error_message = "Folder display name '${each.value.env}-${each.value.sub}' exceeds GCP's 30-char limit."
+      condition     = length("${var.folder_prefix}-${each.value.env}-${each.value.sub}") <= 30
+      error_message = "Folder display name '${var.folder_prefix}-${each.value.env}-${each.value.sub}' exceeds GCP's 30-char limit."
     }
   }
 }
@@ -124,8 +126,8 @@ resource "google_folder" "domain" {
 
   lifecycle {
     precondition {
-      condition     = length("${each.value.env}-${each.value.domain}") <= 30
-      error_message = "Folder display name '${each.value.env}-${each.value.domain}' exceeds GCP's 30-char limit."
+      condition     = length("${var.folder_prefix}-${each.value.env}-${each.value.domain}") <= 30
+      error_message = "Folder display name '${var.folder_prefix}-${each.value.env}-${each.value.domain}' exceeds GCP's 30-char limit."
     }
   }
 }
