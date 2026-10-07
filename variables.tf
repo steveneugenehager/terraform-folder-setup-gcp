@@ -2,6 +2,7 @@
 # 2026-10-07 Steve Hager v2.0 Adding subfolders under environment folders.
 # 2026-10-07 Steve Hager v2.1 Adding subfolders under domains subfolders.
 # 2026-10-07 Steve Hager v2.2 Adding top level folders (expected to be used for common and bootstrap projects).
+# 2026-10-07 Steve Hager v2.2.1 Shorted the default names in environments to avoid an name-too-long error.
 
 variable "org_id" {
   description = "Numeric organization ID (gcloud organizations list, ID column)."
@@ -27,7 +28,7 @@ variable "folder_prefix" {
 variable "environments" {
   description = "Top-level folders to create under the organization, one per environment."
   type        = list(string)
-  default     = ["lab", "development", "nonproduction", "production"]
+  default     = ["lab", "dev", "test", "prod"]
 
   validation {
     condition     = alltrue([for e in var.environments : can(regex("^[a-z][a-z0-9-]{1,20}$", e))])
