@@ -35,9 +35,9 @@ Organization
 | Level | Variable | Display name | Key (for outputs and `folder_iam`) |
 |---|---|---|---|
 | Shared | `shared_folders` | `<prefix>-<name>` | `common` |
-| Environment | `environments` | `<prefix>-<env>` | `production` |
-| Subfolder | `env_subfolders` | `<prefix>-<env>-<sub>` | `production/infrastructure` |
-| Domain | `domains` | `<prefix>-<env>-<domain>` | `production/domains/customer` |
+| Environment | `environments` | `<prefix>-<env>` | `prod` |
+| Subfolder | `env_subfolders` | `<prefix>-<env>-<sub>` | `prod/infrastructure` |
+| Domain | `domains` | `<prefix>-<env>-<domain>` | `prod/domains/customer` |
 
 What each level is for:
 
@@ -56,7 +56,7 @@ Domain folders are created only when `domains` is one of the `env_subfolders`.
 ### Naming limit
 
 GCP folder display names are limited to **30 characters**, and the limit
-applies to the full name, prefix included. `fldr-development-infrastructure`
+applies to the full name, prefix included. `fldr-dev-infrastructure`
 is 31 characters and will fail. Keep environment names short (`dev`, `stg`,
 `prd`), or shorten or empty `folder_prefix`.
 
@@ -117,7 +117,7 @@ Destroys run in reverse order.
 | `terraform_service_account` | *required* | Bootstrap Terraform SA to impersonate. |
 | `folder_prefix` | `"fldr"` | Prefix on every folder's display name. |
 | `shared_folders` | `["bootstrap", "common"]` | Top-level folders outside the environment hierarchy. |
-| `environments` | `["lab", "development", "nonproduction", "production"]` | One top-level folder each. |
+| `environments` | `["lab", "dev", "test", "prod"]` | One top-level folder each. |
 | `env_subfolders` | `["infrastructure", "services", "domains"]` | Created inside every environment. |
 | `domains` | `["customer", "product", "location"]` | Created inside every `<env>/domains`. |
 | `folder_iam` | `{}` | Optional grants; see below. |
@@ -134,10 +134,10 @@ to groups, not individuals. Keys containing `/` must be quoted.
 
 ```hcl
 folder_iam = {
-  production = [
+  prod = [
     { role = "roles/viewer", member = "group:gcp-organization-admins@yourdomain.com" },
   ]
-  "development/domains/customer" = [
+  "dev/domains/customer" = [
     { role = "roles/editor", member = "group:customer-domain-devs@yourdomain.com" },
   ]
 }
@@ -148,11 +148,11 @@ folder_iam = {
 | Output | Keyed by | Example key |
 |---|---|---|
 | `shared_folder_ids` | shared folder name | `common` |
-| `folder_ids` | environment | `production` |
-| `folder_display_names` | environment | `production` |
-| `subfolder_ids` | `<env>/<subfolder>` | `production/infrastructure` |
-| `domain_folder_ids` | `<env>/domains/<domain>` | `production/domains/customer` |
-| `domain_folder_display_names` | `<env>/domains/<domain>` | `production/domains/customer` |
+| `folder_ids` | environment | `prod` |
+| `folder_display_names` | environment | `prod` |
+| `subfolder_ids` | `<env>/<subfolder>` | `prod/infrastructure` |
+| `domain_folder_ids` | `<env>/domains/<domain>` | `prod/domains/customer` |
+| `domain_folder_display_names` | `<env>/domains/<domain>` | `prod/domains/customer` |
 
 IDs are in the `folders/NNN` form, ready to use as `folder_id`.
 
@@ -179,7 +179,7 @@ resource "google_project" "iam_ops" {
 
 resource "google_project" "prod_net_host" {
   # ...
-  folder_id = local.folders.subfolder_ids["production/infrastructure"]
+  folder_id = local.folders.subfolder_ids["prod/infrastructure"]
 }
 ```
 
@@ -229,12 +229,12 @@ Import an existing folder instead of creating a duplicate:
 
 ```hcl
 import {
-  to = google_folder.env["development"]
+  to = google_folder.env["dev"]
   id = "folders/123456789"
 }
 
 import {
-  to = google_folder.env_sub["development/infrastructure"]
+  to = google_folder.env_sub["dev/infrastructure"]
   id = "folders/234567890"
 }
 ```
