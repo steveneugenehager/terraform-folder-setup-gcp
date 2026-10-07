@@ -1,5 +1,7 @@
 # Change History:
 # 2026-10-07 Steve Hager v2.0 Adding subfolders under environment folders.
+# 2026-10-07 Steve Hager v2.1 Adding subfolders under domains subfolders.
+# 2026-10-07 Steve Hager v2.2 Adding top level folders (expected to be used for common and bootstrap projects).
 
 variable "org_id" {
   description = "Numeric organization ID (gcloud organizations list, ID column)."
@@ -61,5 +63,27 @@ variable "env_subfolders" {
   validation {
     condition     = alltrue([for s in var.env_subfolders : can(regex("^[a-z][a-z0-9-]{1,20}$", s))])
     error_message = "Subfolder names: lowercase letters, digits, hyphens; start with a letter; 2-21 chars."
+  }
+}
+
+variable "domains" {
+  description = "Domain folders to create under each environment's domains subfolder."
+  type        = list(string)
+  default     = ["customer", "product", "location"]
+
+  validation {
+    condition     = alltrue([for d in var.domains : can(regex("^[a-z][a-z0-9-]{1,20}$", d))])
+    error_message = "Domain names: lowercase letters, digits, hyphens; start with a letter; 2-21 chars."
+  }
+}
+
+variable "shared_folders" {
+  description = "Top-level folders outside the environment hierarchy (no subfolders)."
+  type        = list(string)
+  default     = ["bootstrap", "common"]
+
+  validation {
+    condition     = alltrue([for s in var.shared_folders : can(regex("^[a-z][a-z0-9-]{1,20}$", s))])
+    error_message = "Shared folder names: lowercase letters, digits, hyphens; start with a letter; 2-21 chars."
   }
 }

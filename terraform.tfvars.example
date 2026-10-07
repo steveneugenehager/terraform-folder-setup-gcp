@@ -1,3 +1,6 @@
+# Change History:
+# 2026-10-07 Steve Hager v2.1 Added example of Subfolder under domains subfolders.
+
 # Copy to terraform.tfvars (gitignored) and fill in.
 org_id                    = "123456789012"
 terraform_service_account = "terraform-super-admin@SEED_PROJECT_ID.iam.gserviceaccount.com"
@@ -14,4 +17,7 @@ terraform_service_account = "terraform-super-admin@SEED_PROJECT_ID.iam.gservicea
 #   production = [
 #     { role = "roles/viewer", member = "group:gcp-org-admins@yourdomain.com" },
 #   ]
+#  "development/domains/customer" = [
+#    { role = "roles/editor", member = "group:customer-domain-devs@stevenhager.com" },
+#  ]
 # }
