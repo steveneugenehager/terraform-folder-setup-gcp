@@ -7,6 +7,7 @@
 # 2026-10-07 Steve Hager v2.2 Adding top level folders (expected to be used for common and bootstrap projects).
 # 2026-10-07 Steve Hager v2.2.1 Fixed a couple of bugs related to length of folder names. 
 #                                  In two places the folder_prefix wasn't being accounted for in the checks.
+# 2026-10-07 Steve Hager v2.2.2 Corrected an error message related to folder_iam condition.
 
 # ---------------------------------------------------------------------------
 # Shared top-level folders: org-wide services that belong to no environment.
@@ -69,7 +70,7 @@ resource "google_folder_iam_member" "grants" {
   lifecycle {
     precondition {
       condition     = contains(keys(local.all_folder_ids), each.value.env)
-      error_message = "folder_iam key '${each.value.env}' is not in var.environments."
+      error_message = "folder_iam key '${each.value.env}' doesn't match a managed folder. Use a shared folder (common), an environment (prod), env/subfolder (prod/infrastructure), or env/domains/domain (prod/domains/customer)."
     }
   }
 }

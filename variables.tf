@@ -38,9 +38,15 @@ variable "environments" {
 
 variable "folder_iam" {
   description = <<-EOT
-    Optional IAM grants on each folder, keyed by environment name. Example:
+    Optional IAM grants on any managed folder. Keys are folder keys:
+      shared folder:   common
+      environment:     prod
+      env/subfolder:   "prod/infrastructure"
+      env/domain:      "prod/domains/customer"
+    Example:
       {
-        development = [{ role = "roles/viewer", member = "group:devs@example.com" }]
+        prod                    = [{ role = "roles/viewer", member = "group:org-admins@example.com" }]
+        "dev/domains/customer"  = [{ role = "roles/editor", member = "group:customer-devs@example.com" }]
       }
   EOT
   type = map(list(object({
